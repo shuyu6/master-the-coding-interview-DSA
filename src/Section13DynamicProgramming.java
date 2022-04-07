@@ -13,9 +13,10 @@ public class Section13DynamicProgramming {
         System.out.println("Calculations: "+calculationsOptimized);
 
         //
-        var houseRobber = new HouseRobber();
+        var houseRobber = new HouseRobber(new int[]{7,3,4,5});
         System.out.println("----House Robber----");
-        System.out.println("We can earn: "+houseRobber.rob(new int[]{7,3,4,5}));
+        System.out.println("Solution 1 earn : "+houseRobber.rob_solution1(houseRobber.nums.length-1)+" time complexity: "+houseRobber.timeComplexitySolution1);
+        System.out.println("Solution 2 earn : "+houseRobber.rob_solution2(houseRobber.nums.length-1)+" time complexity: "+houseRobber.timeComplexitySolution2);
     }
     // time complexity O(2^n)
     private static long fibonacci(int n){
@@ -41,31 +42,34 @@ public class Section13DynamicProgramming {
     }
 
     static class HouseRobber{
-        int[] memo;
-
-        public int rob(int[] nums) {
-            return rob_solution1(nums, nums.length -1);
-//            memo = new int[nums.length];
-//            return rob_solution2(nums, nums.length -1);
+        private int[] nums;
+        private int[] memo1;
+        private int timeComplexitySolution1 = 0;
+        private int timeComplexitySolution2 = 0;
+        public HouseRobber(int[] nums){
+            this.nums = nums;
+            this.memo1 = new int[nums.length];
         }
 
         // first solution: time complexity O(2^n)
-        public int rob_solution1(int[] nums, int i){
+        public int rob_solution1(int i){
             if(i<0) return 0;
+            timeComplexitySolution1++;
 
             return Math.max(
-                    rob_solution1(nums, i-1),   // do not rob
-                    rob_solution1(nums, i-2)+nums[i]);  // rob and go to the next next house
+                    rob_solution1(i-1),   // do not rob
+                    rob_solution1(i-2)+nums[i]);  // rob and go to the next next house
         }
 
         // divide and conquer
         // time complexity O(n)
         // space complexity O(n)
-        public int rob_solution2(int[] nums, int i){
+        public int rob_solution2(int i){
             if (i<0) return 0;
-            if (memo[i]>0) return memo[i];
-            memo[i] = Math.max(rob_solution2(nums, i-1), rob_solution2(nums, i-2)+nums[i]);
-            return memo[i];
+            if (memo1[i]>0) return memo1[i];
+            timeComplexitySolution2++;
+            memo1[i] = Math.max(rob_solution2(i-1), rob_solution2(i-2)+nums[i]);
+            return memo1[i];
         }
     }
 }
