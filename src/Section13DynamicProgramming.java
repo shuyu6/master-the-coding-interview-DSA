@@ -12,12 +12,26 @@ public class Section13DynamicProgramming {
         System.out.println("Fibonacci solution 2 : "+fibonacciShuYu(6));
         System.out.println("Calculations: "+calculationsOptimized);
 
-        //
+        // House Robber leet code problem
         var houseRobber = new HouseRobber(new int[]{7,3,4,5,4,5,4});
         System.out.println("----House Robber----");
         System.out.println("Solution 1 earn : "+houseRobber.rob_solution1(houseRobber.nums.length-1)+" time complexity: "+houseRobber.timeComplexitySolution1);
         System.out.println("Solution 2 earn : "+houseRobber.rob_solution2(houseRobber.nums.length-1)+" time complexity: "+houseRobber.timeComplexitySolution2);
         System.out.println("Solution 3 earn : "+houseRobber.rob_solution3()+" time complexity: "+houseRobber.timeComplexitySolution3);
+
+        // Best time to buy and sell
+        var maxProfit = new BestTimeBuyAndSell(new int[]{7,6,4,3,1});
+        System.out.println("-------Best time to buy and sell-------");
+        System.out.println("Solution 1 max profit : "+maxProfit.maxProfit_1()+" time complexity: "+maxProfit.timeComplexity1);
+        System.out.println("Solution 2 max profit : "+maxProfit.maxProfit_2()+" time complexity: "+maxProfit.timeComplexity2);
+        System.out.println("Solution 3 max profit : "+maxProfit.maxProfit_godSolution()+" time complexity: "+maxProfit.timeComplexity3);
+
+        var maxProfit2 = new BestTimeBuyAndSell(new int[]{7,1,3,4,6,1});
+        System.out.println("Test 2 ");
+        System.out.println("Solution 1 max profit : "+maxProfit2.maxProfit_1()+" time complexity: "+maxProfit2.timeComplexity1);
+        System.out.println("Solution 2 max profit : "+maxProfit2.maxProfit_2()+" time complexity: "+maxProfit2.timeComplexity2);
+        System.out.println("Solution 3 max profit : "+maxProfit2.maxProfit_godSolution()+" time complexity: "+maxProfit2.timeComplexity3);
+
     }
     // time complexity O(2^n)
     private static long fibonacci(int n){
@@ -90,5 +104,67 @@ public class Section13DynamicProgramming {
             }
             return prev1;
         }
+    }
+    // #leetcode: 121
+    static class BestTimeBuyAndSell{
+        private final int[] prices;
+        private int timeComplexity1;
+        private int timeComplexity2;
+        private int timeComplexity3;
+
+        public BestTimeBuyAndSell(int[] prices){
+            this.prices = prices;
+            this.timeComplexity1 = 0;
+            this.timeComplexity2 = 0;
+            this.timeComplexity3 = 0;
+        }
+
+        // time complexity O(2^n)
+        public int maxProfit_1(){
+            if(prices.length <2) return 0;
+            int maxProfit = 0;
+            for(int b=0; b<prices.length-1;b++){
+                for(int s=b+1; s<prices.length;s++){
+                    timeComplexity1++;
+                    maxProfit = Math.max(prices[s]-prices[b], maxProfit);
+                }
+            }
+            return maxProfit;
+        }
+        // time complexity O(n)
+        public int maxProfit_2(){
+            if(prices.length<2) return 0;
+            int b = 0; //buy index
+            int maxProfit = 0;
+
+            for(int s=1; s<prices.length;s++){  // is sell
+                timeComplexity2++;
+                var tempProfit = prices[s] - prices[b];
+                if (tempProfit>0){
+                    maxProfit = Math.max(maxProfit, tempProfit);
+                }else{
+                    if (prices[b]>prices[s]) b=s;
+                }
+            }
+            return maxProfit;
+        }
+        public int maxProfit_godSolution(){
+            var left = 0; // buy
+            var right = 1; // sell
+            var maxProfit = 0;
+            while(right<prices.length){
+                timeComplexity3++;
+
+                if (prices[left]<prices[right]){
+                    maxProfit = Math.max(prices[right]-prices[left], maxProfit);
+                }else {
+                    left=right;
+                }
+                right++;
+            }
+            return maxProfit;
+
+        }
+
     }
 }
