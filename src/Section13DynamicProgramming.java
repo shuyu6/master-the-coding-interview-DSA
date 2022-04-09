@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 public class Section13DynamicProgramming {
     private static long calculations = 0;
     private static long calculationsOptimized = 0;
@@ -32,6 +30,10 @@ public class Section13DynamicProgramming {
         System.out.println("Solution 2 max profit : "+maxProfit2.maxProfit_2()+" time complexity: "+maxProfit2.timeComplexity2);
         System.out.println("Solution 3 max profit : "+maxProfit2.maxProfit_godSolution()+" time complexity: "+maxProfit2.timeComplexity3);
 
+        var climbingStairs = new ClimbingStairs();
+        System.out.println("-------Climbing Stairs-------");
+        System.out.println("3 stairs take "+climbingStairs.climbStairs(3)+" steps ");
+        System.out.println("4 stairs take "+climbingStairs.climbStairs(4)+" steps ");
     }
     // time complexity O(2^n)
     private static long fibonacci(int n){
@@ -58,8 +60,8 @@ public class Section13DynamicProgramming {
 
     // #leetcode: 198
     static class HouseRobber{
-        private int[] nums;
-        private int[] memo1;
+        private final int[] nums;
+        private final int[] memo1;
         private int timeComplexitySolution1 = 0;
         private int timeComplexitySolution2 = 0;
         private int timeComplexitySolution3 = 0;
@@ -166,5 +168,21 @@ public class Section13DynamicProgramming {
 
         }
 
+    }
+    // Leetcode #70
+    static class ClimbingStairs{
+
+        // complexity O(n)
+        public int climbStairs(int n) {
+            if (n<=2) return n;
+            int prev1 = 1;
+            int prev2 = 2;
+            for (int i=3; i<=n;i++){
+                int temp = prev2;
+                prev2 = prev1+prev2;
+                prev1 = temp;
+            }
+            return prev2;
+        }
     }
 }
